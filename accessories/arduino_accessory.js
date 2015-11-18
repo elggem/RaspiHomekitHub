@@ -42,7 +42,7 @@ var HUB_LIGHT = {
     HUB_LIGHT.updateLight();
   },
   identify: function() {
-    console.log("Hub light identify...")
+    console.log("Hub light identify...");
   },
   updateLight: function() {
     var color = HSVtoRGB(HUB_LIGHT.hue/360, 
