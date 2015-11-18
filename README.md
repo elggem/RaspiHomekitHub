@@ -3,26 +3,31 @@ raspi-homekit-hub
 
 This repository hosts all files for my Raspberry Pi Homekit Hub. The hub contains 4 strands of WS2812b LEDs for colored light and controls 433Mhz power sockets.
 
-HAP-NodeJS
-==========
+Hardware
+========
 
-HAP-NodeJS is a Node.js implementation of HomeKit Accessory Server. The Raspberry Pi code and documentation here is based on it.
+Documentation on this coming soon.
+
+Raspberry Pi Code
+=================
+
+HAP-NodeJS is a Node.js implementation of HomeKit Accessory Server. The Raspberry Pi code here is based on it.
 
 Remember to run `npm install` before actually running the server.
 
-You can use the following command to start the HAP Server in Bridged mode:
+You can use the following command to start the HAP Server:
 
 ```sh
-node BridgedCore.js
+node HomekitCore.js
 ```
 
 The HAP-NodeJS library uses the [debug](https://github.com/visionmedia/debug) library for log output. You can print some or all logs by setting the `DEBUG` environment variable. For instance, to see all debug logs while running the server:
 
 ```sh
-DEBUG=* node BridgedCore.js
+DEBUG=* node HomekitCore.js
 ```
 
-Notes
-=====
+Arduino Code
+============
 
-Schematics coming soon.
+To avoid using a level converter and also to provide a nice animation during the boot phase of the Raspberry Pi an Arduino is used for controlling the WS2812B. The code running on it is essentially a serial interface for the LEDs and is based on Adafruits Neopixel library (install it before trying to compile the code).
