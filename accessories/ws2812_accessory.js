@@ -7,6 +7,27 @@ var SerialPort = require("serialport").SerialPort
 // serial connection
 var serialPort = new SerialPort("/dev/cu.usbserial-A5005C3W", { baudrate: 9600 });
 
+/*
+
+
+var turn_on = function() {
+    serialPort.write("1 10 10 10\r", function(err, results) {
+    console.log('err ' + err);
+    console.log('results ' + results);
+  });
+};
+
+serialPort.on("open", function () {
+  console.log('open');
+  serialPort.on('data', function(data) {
+    console.log('data received: ' + data);
+  });
+  setTimeout( turn_on, 5000 );
+
+});
+
+*/
+
 // here's a fake hardware device that we'll expose to HomeKit
 var WS2812_LIGHT = {
   powerOn: false,
