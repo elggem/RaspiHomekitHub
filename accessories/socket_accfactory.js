@@ -28,7 +28,7 @@ socketDefinitions.forEach(function(socketInfo) {
   var socket = new Accessory(socketInfo.name, socketUUID);
 
   // Init:
-  socket.poweredOn = true;
+  socket.poweredOn = false;
   rc.send(socketInfo.id, 'dip', !socket.poweredOn);
 
   // set some basic properties (these values are arbitrary and setting them is optional)
@@ -60,6 +60,7 @@ socketDefinitions.forEach(function(socketInfo) {
     });
 
   exports.accessories.push(socket);
+
 });
 
 
