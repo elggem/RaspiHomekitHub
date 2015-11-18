@@ -27,6 +27,10 @@ socketDefinitions.forEach(function(socketInfo) {
   // This is the Accessory that we'll return to HAP-NodeJS that represents our fake light.
   var socket = new Accessory(socketInfo.name, socketUUID);
 
+  // Init:
+  socket.poweredOn = false;
+  rc.send(socketInfo.id, 'dip', !socket.poweredOn);
+
   // set some basic properties (these values are arbitrary and setting them is optional)
   socket
     .getService(Service.AccessoryInformation)
@@ -43,11 +47,15 @@ socketDefinitions.forEach(function(socketInfo) {
   // Add the actual Lightbulb Service and listen for change events from iOS.
   // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
   socket
-    .addService(Service.Lightbulb, "Socket 1") // services exposed to the user should have "names" like "Fake Light" for us
+    .addService(Service.Switch, socketInfo.name) // services exposed to the user should have "names" like "Fake Light" for us
     .getCharacteristic(Characteristic.On)
+    .on('get', function(callback) {
+      callback(null, socket.poweredOn);
+    })
     .on('set', function(value, callback) {
       console.log("Switching " + socketInfo.name);
-      rc.send(socketInfo.id, !value);
+      rc.send(socketInfo.id, 'dip', !value);
+      socket.poweredOn = value;
       callback(); // Our fake Light is synchronous - this value has been successfully set
     });
 
