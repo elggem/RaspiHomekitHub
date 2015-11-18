@@ -33,6 +33,6 @@ accessories.forEach(function(accessory) {
 bridge.publish({
   username: "CC:22:3D:E3:CE:F8",
   port: 51826,
-  pincode: "123-45-678",
+  pincode: "031-45-154",
   category: Accessory.Categories.OTHER
 });
