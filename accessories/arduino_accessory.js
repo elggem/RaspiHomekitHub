@@ -58,7 +58,7 @@ var HUB_LIGHT = {
     var rgbString = color.r + " " + color.g + " " + color.b;
 
     console.log("Sending to hub light:", rgbString)
-    serialPort.write("1 %s\r2 %s\r3 %\r4 %\r", rgbString);
+    serialPort.write("1 "+rgbString+"\r2 "+rgbString+"\r3 "+rgbString+"\r4 "+rgbString+"\r");
   }
 }
 
