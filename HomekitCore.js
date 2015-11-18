@@ -12,7 +12,7 @@ console.log("HAP-NodeJS starting...");
 storage.initSync();
 
 // Start by creating our Bridge which will host all loaded Accessories
-var bridge = new Bridge('PiHub', uuid.generate("raspi-homekit-hub"));
+var bridge = new Bridge('Ava', uuid.generate("raspi-homekit-hub"));
 
 // Listen for bridge identification event
 //bridge.on('identify', function(paired, callback) {

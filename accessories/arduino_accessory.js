@@ -30,13 +30,15 @@ serialPort.on("open", function () {
 */
 
 // here's a fake hardware device that we'll expose to HomeKit
-var WS2812_LIGHT = {
+var HUB_LIGHT = {
   powerOn: false,
   brightness: 100, // percentage
+  saturation: 100, // percentage
+  hue: 100, // percentage
   
   setPowerOn: function(on) { 
-    console.log("Turning the light %s!", on ? "on" : "off");
-    WS2812_LIGHT.powerOn = on;
+    console.log("Turning the hub light %s!", on ? "on" : "off");
+    HUB_LIGHT.powerOn = on;
     if (on) {
           serialPort.write("1 10 10 10\r");
 
@@ -48,34 +50,26 @@ var WS2812_LIGHT = {
     //add callbacks to serial library here...
   },
   setBrightness: function(brightness) {
-    console.log("Setting light brightness to %s", brightness);
-    WS2812_LIGHT.brightness = brightness;
+    console.log("Setting hub light brightness to %s", brightness);
+    HUB_LIGHT.brightness = brightness;
   },
-  identify: function() {
-    console.log("Identify the light!");
+  setSaturation: function(saturation) {
+    console.log("Setting hub light saturation to %s", saturation);
+    HUB_LIGHT.saturation = saturation;
+  },
+  setHue: function(hue) {
+    console.log("Setting hub light hue to %s", hue);
+    HUB_LIGHT.hue = hue;
   }
 }
 
 // Generate a consistent UUID for our light Accessory that will remain the same even when
 // restarting our server. We use the `uuid.generate` helper function to create a deterministic
 // UUID based on an arbitrary "namespace" and the word "light".
-var lightUUID = uuid.generate('hap-nodejs:accessories:ws2812blight');
+var lightUUID = uuid.generate('hap-nodejs:accessories:hublight');
 
 // This is the Accessory that we'll return to HAP-NodeJS that represents our fake light.
 var light = exports.accessory = new Accessory('Hub Light', lightUUID);
-
-// set some basic properties (these values are arbitrary and setting them is optional)
-light
-  .getService(Service.AccessoryInformation)
-  .setCharacteristic(Characteristic.Manufacturer, "elggem")
-  .setCharacteristic(Characteristic.Model, "REV-0")
-  //.setCharacteristic(Characteristic.SerialNumber, "A1S2NASF88EW");
-
-// listen for the "identify" event for this Accessory
-light.on('identify', function(paired, callback) {
-  WS2812_LIGHT.identify();
-  callback(); // success
-});
 
 // Add the actual Lightbulb Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
@@ -83,41 +77,43 @@ light
   .addService(Service.Lightbulb, "Hub Light") // services exposed to the user should have "names" like "Fake Light" for us
   .getCharacteristic(Characteristic.On)
   .on('set', function(value, callback) {
-    WS2812_LIGHT.setPowerOn(value);
-    callback(); // Our fake Light is synchronous - this value has been successfully set
+    HUB_LIGHT.setPowerOn(value);
+    callback(); // Our Light is synchronous - this value has been successfully set
   });
 
-// We want to intercept requests for our current power state so we can query the hardware itself instead of
-// allowing HAP-NodeJS to return the cached Characteristic.value.
-light
-  .getService(Service.Lightbulb)
-  .getCharacteristic(Characteristic.On)
-  .on('get', function(callback) {
-    
-    // this event is emitted when you ask Siri directly whether your light is on or not. you might query
-    // the light hardware itself to find this out, then call the callback. But if you take longer than a
-    // few seconds to respond, Siri will give up.
-    
-    var err = null; // in case there were any problems
-    
-    if (WS2812_LIGHT.powerOn) {
-      console.log("Are we on? Yes.");
-      callback(err, true);
-    }
-    else {
-      console.log("Are we on? No.");
-      callback(err, false);
-    }
-  });
-
-// also add an "optional" Characteristic for Brightness
+// also add a Characteristic for Brightness
 light
   .getService(Service.Lightbulb)
   .addCharacteristic(Characteristic.Brightness)
   .on('get', function(callback) {
-    callback(null, WS2812_LIGHT.brightness);
+    callback(null, HUB_LIGHT.brightness);
   })
   .on('set', function(value, callback) {
-    WS2812_LIGHT.setBrightness(value);
+    HUB_LIGHT.setBrightness(value);
     callback();
   })
+
+// also add a Characteristic for Saturation
+light
+  .getService(Service.Lightbulb)
+  .addCharacteristic(Characteristic.Saturation)
+  .on('get', function(callback) {
+    callback(null, HUB_LIGHT.saturation);
+  })
+  .on('set', function(value, callback) {
+    HUB_LIGHT.setSaturation(value);
+    callback();
+  })
+
+// also add a Characteristic for Hue
+light
+  .getService(Service.Lightbulb)
+  .addCharacteristic(Characteristic.Hue)
+  .on('get', function(callback) {
+    callback(null, HUB_LIGHT.hue);
+  })
+  .on('set', function(value, callback) {
+    HUB_LIGHT.setHue(value);
+    callback();
+  })
+
