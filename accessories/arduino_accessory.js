@@ -5,7 +5,7 @@ var uuid = require('../').uuid;
 var SerialPort = require("serialport").SerialPort
 
 // serial connection
-var serialPort = new SerialPort("/dev/cu.usbserial-A5005C3W", { baudrate: 9600 });
+var serialPort = new SerialPort("/dev/ttyUSB0", { baudrate: 9600 });
 
 /*
 

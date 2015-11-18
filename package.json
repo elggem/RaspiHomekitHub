@@ -10,6 +10,7 @@
     "mdns": "^2.2.4",
     "node-persist": "0.0.3",
     "serialport": "^2.0.5",
+    "piswitch": "^1.2.3",
     "srp": "git://github.com/KhaosT/node-srp"
   },
   "devDependencies": {
