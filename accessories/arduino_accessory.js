@@ -79,7 +79,7 @@ light
 
 // listen for the "identify" event for this Accessory
 light.on('identify', function(paired, callback) {
-  LIGHT.identify();
+  HUB_LIGHT.identify();
   callback(); // success
 });
 
