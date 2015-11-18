@@ -4,7 +4,7 @@ var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
 // here's a fake hardware device that we'll expose to HomeKit
-var 433_LIGHT = {
+var LIGHT = {
   powerOn: false,
   
   setPowerOn: function(on) { 
@@ -19,7 +19,7 @@ var 433_LIGHT = {
 // Generate a consistent UUID for our light Accessory that will remain the same even when
 // restarting our server. We use the `uuid.generate` helper function to create a deterministic
 // UUID based on an arbitrary "namespace" and the word "light".
-var lightUUID = uuid.generate('hap-nodejs:accessories:light');
+var lightUUID = uuid.generate('hap-nodejs:accessories:433light');
 
 // This is the Accessory that we'll return to HAP-NodeJS that represents our fake light.
 var light = exports.accessory = new Accessory('Light', lightUUID);
@@ -33,7 +33,7 @@ light
 
 // listen for the "identify" event for this Accessory
 light.on('identify', function(paired, callback) {
-  433_LIGHT.identify();
+  LIGHT.identify();
   callback(); // success
 });
 
@@ -43,7 +43,7 @@ light
   .addService(Service.Lightbulb, "Socket 1") // services exposed to the user should have "names" like "Fake Light" for us
   .getCharacteristic(Characteristic.On)
   .on('set', function(value, callback) {
-    433_LIGHT.setPowerOn(value);
+    LIGHT.setPowerOn(value);
     callback(); // Our fake Light is synchronous - this value has been successfully set
   });
 
@@ -60,7 +60,7 @@ light
     
     var err = null; // in case there were any problems
     
-    if (433_LIGHT.powerOn) {
+    if (LIGHT.powerOn) {
       console.log("Are we on? Yes.");
       callback(err, true);
     }

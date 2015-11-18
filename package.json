@@ -1,7 +1,7 @@
 {
-  "name": "hap-nodejs",
-  "version": "0.0.6",
-  "description": "HAP-NodeJS is a Node.js implementation of HomeKit Accessory Server.",
+  "name": "raspi-homekit-hub",
+  "version": "0.0.1",
+  "description": "Code for Raspberry Pi Homekit Hub for controlling 433Mhz power sockets",
   "main": "index.js",
   "dependencies": {
     "curve25519": "git://github.com/KhaosT/node-curve25519",
@@ -9,6 +9,7 @@
     "ed25519": "git://github.com/KhaosT/ed25519",
     "mdns": "^2.2.4",
     "node-persist": "0.0.3",
+    "serialport": "^2.0.5",
     "srp": "git://github.com/KhaosT/node-srp"
   },
   "devDependencies": {
@@ -16,16 +17,16 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node BridgedCore.js"
+    "start": "node HomekitCore.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/KhaosT/HAP-NodeJS.git"
+    "url": "https://github.com/elggem/raspi-homekit-hub.git"
   },
-  "author": "Khaos Tian <khaos.tian@gmail.com> (http://tz.is/)",
+  "author": "elggem",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/KhaosT/HAP-NodeJS/issues"
+    "url": "https://github.com/elggem/raspi-homekit-hub/pulls"
   },
-  "homepage": "https://github.com/KhaosT/HAP-NodeJS"
+  "homepage": "https://github.com/elggem/raspi-homekit-hub"
 }
