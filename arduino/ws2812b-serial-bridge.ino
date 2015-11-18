@@ -3,8 +3,6 @@
   #include <avr/power.h>
 #endif
 
-#define PIN 6
-
 // Parameter 1 = number of pixels in strip
 // Parameter 2 = Arduino pin number (most are valid)
 // Parameter 3 = pixel type flags, add together as needed:
@@ -12,27 +10,118 @@
 //   NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(60, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_a = Adafruit_NeoPixel(15, 5, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_b = Adafruit_NeoPixel(15, 6, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_c = Adafruit_NeoPixel(15, 7, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_d = Adafruit_NeoPixel(15, 8, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
 // and minimize distance between Arduino and first pixel.  Avoid connecting
 // on a live circuit...if you must, connect GND first.
 
+//Serial stuff:
+int inByte = 0;         // incoming serial byte
+String buffer = "";
+
+
 void setup() {
-  // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
-  #if defined (__AVR_ATtiny85__)
-    if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
-  #endif
-  // End of trinket special code
+  
+  Serial.begin(9600);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
+
+  //init strips:
+  strip_a.begin();
+  strip_b.begin();
+  strip_c.begin();
+  strip_d.begin();
+  
+  strip_a.show(); // Initialize all pixels to 'off'
+  strip_b.show(); 
+  strip_c.show(); 
+  strip_d.show();
 
 
-  strip.begin();
-  strip.show(); // Initialize all pixels to 'off'
+  
 }
 
 void loop() {
-  // Some example procedures showing how to display to the pixels:
+
+
+  if (Serial.available() > 0) {
+    // get incoming byte:
+    inByte = Serial.read();
+
+    if (inByte == 13) { //CR
+      
+      int strip_id = getValue(buffer, 0).toInt();
+      int r = getValue(buffer, 1).toInt();
+      int g = getValue(buffer, 2).toInt();
+      int b = getValue(buffer, 3).toInt();
+
+      if (strip_id<1 || strip_id>4 || r<0 || r>255 || g<0 || g>255 || b<0 || b>255) {
+        Serial.println("ERROR");
+      } else {
+        Serial.println("ACK");
+        //DEBUG:
+        if(r+g+b == 0) {
+          digitalWrite(13, LOW);
+        } else {
+          digitalWrite(13, HIGH);
+        }
+        
+      }
+
+      buffer = "";
+    } else {
+      buffer += (char)inByte;
+    }
+  }
+}
+
+
+
+
+
+
+String getValue(String data, int index)
+{
+  char separator = ' ';
+  int found = 0;
+  int strIndex[] = {0, -1};
+  int maxIndex = data.length()-1;
+
+  for(int i=0; i<=maxIndex && found<=index; i++){
+    if(data.charAt(i)==separator || i==maxIndex){
+        found++;
+        strIndex[0] = strIndex[1]+1;
+        strIndex[1] = (i == maxIndex) ? i+1 : i;
+    }
+  }
+
+  return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ * 
+ Some example procedures showing how to display to the pixels:
   colorWipe(strip.Color(255, 0, 0), 50); // Red
   colorWipe(strip.Color(0, 255, 0), 50); // Green
   colorWipe(strip.Color(0, 0, 255), 50); // Blue
@@ -44,8 +133,6 @@ void loop() {
   rainbow(20);
   rainbowCycle(20);
   theaterChaseRainbow(50);
-}
-
 // Fill the dots one after the other with a color
 void colorWipe(uint32_t c, uint8_t wait) {
   for(uint16_t i=0; i<strip.numPixels(); i++) {
@@ -129,4 +216,4 @@ uint32_t Wheel(byte WheelPos) {
   }
   WheelPos -= 170;
   return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
-}
+}*/
