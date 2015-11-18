@@ -11,9 +11,9 @@ rc.setup({
     protocol: 1
 });
 
-var socketDefinitions = [{name: "Socket A", id: '0010110000'},
-                         {name: "Socket B", id: '0010110100'},
-                         {name: "Socket C", id: '0010110010'}];
+var socketDefinitions = [{name: "Outlet A", id: '0010110000'},
+                         {name: "Outlet B", id: '0010110100'},
+                         {name: "Outlet C", id: '0010110010'}];
 
 exports.accessories = [];
 
@@ -28,7 +28,7 @@ socketDefinitions.forEach(function(socketInfo) {
   var socket = new Accessory(socketInfo.name, socketUUID);
 
   // Init:
-  socket.poweredOn = false;
+  socket.poweredOn = true;
   rc.send(socketInfo.id, 'dip', !socket.poweredOn);
 
   // set some basic properties (these values are arbitrary and setting them is optional)
@@ -47,7 +47,7 @@ socketDefinitions.forEach(function(socketInfo) {
   // Add the actual Lightbulb Service and listen for change events from iOS.
   // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
   socket
-    .addService(Service.Switch, socketInfo.name) // services exposed to the user should have "names" like "Fake Light" for us
+    .addService(Service.Outlet, socketInfo.name) // services exposed to the user should have "names" like "Fake Light" for us
     .getCharacteristic(Characteristic.On)
     .on('get', function(callback) {
       callback(null, socket.poweredOn);
