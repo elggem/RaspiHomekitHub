@@ -88,6 +88,9 @@ light.on('identify', function(paired, callback) {
 light
   .addService(Service.Lightbulb, "Hub Light") // services exposed to the user should have "names" like "Fake Light" for us
   .getCharacteristic(Characteristic.On)
+  .on('get', function(callback) {
+    callback(null, HUB_LIGHT.powerOn);
+  })
   .on('set', function(value, callback) {
     HUB_LIGHT.setPowerOn(value);
     callback(); // Our Light is synchronous - this value has been successfully set
