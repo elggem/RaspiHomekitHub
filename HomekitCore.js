@@ -15,10 +15,10 @@ storage.initSync();
 var bridge = new Bridge('Raspi Hub', uuid.generate("Raspi Hub"));
 
 // Listen for bridge identification event
-bridge.on('identify', function(paired, callback) {
-  console.log("Node Bridge identify");
-  callback(); // success
-});
+//bridge.on('identify', function(paired, callback) {
+//  console.log("Node Bridge identify");
+//  callback(); // success
+//});
 
 // Load up all accessories in the /accessories folder
 var dir = path.join(__dirname, "accessories");
