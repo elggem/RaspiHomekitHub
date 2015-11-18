@@ -46,7 +46,7 @@ module rcylinder_bottom(r=65/2,h=10,b=2) {
     }
 }
 
-diameter = 70;
+diameter = 75;
 
 module psu_holder()
 {
@@ -109,7 +109,7 @@ module composite_cap()
         circle(diameter/2);
         {
             
-            translate([-57/2,-27/2,0]) square([57,27]);
+            translate([-60/2,-27/2,0]) square([60,27]);
         }
     }
     
@@ -117,7 +117,7 @@ module composite_cap()
     difference()
     { 
         translate([-25,-15,0]) square([50,30]);
-        translate([-57/2,-27/2,0]) square([57,27]); 
+        translate([-60/2,-27/2,0]) square([60,27]); 
     }
 }
 
@@ -128,7 +128,7 @@ module composite_bottom_cap()
         cap_hole();
     }
 
-    translate([0,0,2.5]) linear_extrude(height = 5)     
+    translate([0,0,2.5]) linear_extrude(height = 6)     
     difference()
     {   
         circle(diameter/2);
