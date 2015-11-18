@@ -3,13 +3,21 @@ var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
+
+//TODO
+//Have an array here with definitions for sockets in use
+//Make the code below a method
+//Generate light object for each entry in array and instantiate it.
+
+
+
 // here's a fake hardware device that we'll expose to HomeKit
 var LIGHT = {
   powerOn: false,
   
   setPowerOn: function(on) { 
     console.log("Turning the light %s!", on ? "on" : "off");
-    FAKE_LIGHT.powerOn = on;
+    LIGHT.powerOn = on;
   },
   identify: function() {
     console.log("Identify the light!");
@@ -22,7 +30,7 @@ var LIGHT = {
 var lightUUID = uuid.generate('hap-nodejs:accessories:433light');
 
 // This is the Accessory that we'll return to HAP-NodeJS that represents our fake light.
-var light = exports.accessory = new Accessory('Light', lightUUID);
+var light = exports.accessory = new Accessory('Socket 1', lightUUID);
 
 // set some basic properties (these values are arbitrary and setting them is optional)
 light

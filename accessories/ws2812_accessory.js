@@ -2,6 +2,10 @@ var Accessory = require('../').Accessory;
 var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
+var SerialPort = require("serialport").SerialPort
+
+// serial connection
+var serialPort = new SerialPort("/dev/cu.usbserial-A5005C3W", { baudrate: 9600 });
 
 // here's a fake hardware device that we'll expose to HomeKit
 var WS2812_LIGHT = {
@@ -10,13 +14,20 @@ var WS2812_LIGHT = {
   
   setPowerOn: function(on) { 
     console.log("Turning the light %s!", on ? "on" : "off");
-    FAKE_LIGHT.powerOn = on;
+    WS2812_LIGHT.powerOn = on;
+    if (on) {
+          serialPort.write("1 10 10 10\r");
+
+        } else {
+              serialPort.write("1 0 0 0\r");
+
+        }
 
     //add callbacks to serial library here...
   },
   setBrightness: function(brightness) {
     console.log("Setting light brightness to %s", brightness);
-    FAKE_LIGHT.brightness = brightness;
+    WS2812_LIGHT.brightness = brightness;
   },
   identify: function() {
     console.log("Identify the light!");
@@ -29,7 +40,7 @@ var WS2812_LIGHT = {
 var lightUUID = uuid.generate('hap-nodejs:accessories:ws2812blight');
 
 // This is the Accessory that we'll return to HAP-NodeJS that represents our fake light.
-var light = exports.accessory = new Accessory('Light', lightUUID);
+var light = exports.accessory = new Accessory('Hub Light', lightUUID);
 
 // set some basic properties (these values are arbitrary and setting them is optional)
 light
