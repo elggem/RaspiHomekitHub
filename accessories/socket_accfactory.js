@@ -46,7 +46,8 @@ socketDefinitions.forEach(function(socketInfo) {
     .addService(Service.Lightbulb, "Socket 1") // services exposed to the user should have "names" like "Fake Light" for us
     .getCharacteristic(Characteristic.On)
     .on('set', function(value, callback) {
-      rc.send(socketInfo.id, !on);
+      console.log("Switching " + socketInfo.name);
+      rc.send(socketInfo.id, !value);
       callback(); // Our fake Light is synchronous - this value has been successfully set
     });
 
