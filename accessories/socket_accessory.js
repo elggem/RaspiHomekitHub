@@ -3,13 +3,13 @@ var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
-var rc = require("piswitch");
+/*var rc = require("piswitch");
 
 rc.setup({
     mode: 'sys', // alternative: change to gpio and use root
     pulseLength: 330, // this works for me, but 350 is very common
     protocol: 1
-});
+});*/
 
 
 //TODO
@@ -24,7 +24,7 @@ var LIGHT = {
   
   setPowerOn: function(on) { 
     console.log("Turning the light %s!", on ? "on" : "off");
-    rc.send('0010110000', 'dip', !on);
+    //rc.send('0010110000', 'dip', !on);
 
     LIGHT.powerOn = on;
   },
@@ -44,9 +44,9 @@ var light = exports.accessory = new Accessory('Socket 1', lightUUID);
 // set some basic properties (these values are arbitrary and setting them is optional)
 light
   .getService(Service.AccessoryInformation)
-  .setCharacteristic(Characteristic.Manufacturer, "elggem")
-  .setCharacteristic(Characteristic.Model, "REV-0")
-  //.setCharacteristic(Characteristic.SerialNumber, "A1S2NASF88EW");
+  .setCharacteristic(Characteristic.Manufacturer, "Ava")
+  .setCharacteristic(Characteristic.Model, "0.0.1")
+  .setCharacteristic(Characteristic.SerialNumber, "AV323230");
 
 // listen for the "identify" event for this Accessory
 light.on('identify', function(paired, callback) {

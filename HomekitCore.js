@@ -3,6 +3,8 @@ var path = require('path');
 var storage = require('node-persist');
 var uuid = require('./').uuid;
 var Bridge = require('./').Bridge;
+var Service = require('./').Service;
+var Characteristic = require('./').Characteristic;
 var Accessory = require('./').Accessory;
 var accessoryLoader = require('./lib/AccessoryLoader');
 
@@ -14,11 +16,19 @@ storage.initSync();
 // Start by creating our Bridge which will host all loaded Accessories
 var bridge = new Bridge('Ava', uuid.generate("raspi-homekit-hub"));
 
+// set some basic properties (these values are arbitrary and setting them is optional)
+bridge
+  .getService(Service.AccessoryInformation)
+  .setCharacteristic(Characteristic.Manufacturer, "Ava")
+  .setCharacteristic(Characteristic.Model, "0.0.1")
+  .setCharacteristic(Characteristic.SerialNumber, "AV3923970");
+
 // Listen for bridge identification event
-//bridge.on('identify', function(paired, callback) {
-//  console.log("Node Bridge identify");
-//  callback(); // success
-//});
+bridge.on('identify', function(paired, callback) {
+  console.log("Node Bridge identify");
+  //TODO: Maybe implement a blinking of the hub light here.
+  callback(); // success
+});
 
 // Load up all accessories in the /accessories folder
 var dir = path.join(__dirname, "accessories");
@@ -31,7 +41,7 @@ accessories.forEach(function(accessory) {
 
 // Publish the Bridge on the local network.
 bridge.publish({
-  username: "CC:22:3D:E3:CE:F8",
+  username: "CC:22:3D:E3:CE:A9",
   port: 51826,
   pincode: "031-45-154",
   category: Accessory.Categories.OTHER
