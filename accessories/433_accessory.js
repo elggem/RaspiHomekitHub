@@ -10,7 +10,6 @@ var uuid = require('../').uuid;
 //Generate light object for each entry in array and instantiate it.
 
 
-
 // here's a fake hardware device that we'll expose to HomeKit
 var LIGHT = {
   powerOn: false,

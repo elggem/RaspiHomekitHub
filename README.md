@@ -11,19 +11,19 @@ Documentation on this coming soon.
 Raspberry Pi Code
 =================
 
- * Issue the following commands to ensure you are up to date:
-
-```bash
-   sudo apt-get update
-   sudo apt-get upgrade -y
-```
-
  * Download and install node.js:
 
 ```bash
    wget https://node-arm.herokuapp.com/node_archive_armhf.deb
    sudo dpkg -i node_archive_armhf.deb
 ```
+
+ * Download dependency for mdns NodeJS package:
+
+```bash
+   sudo apt-get install libavahi-compat-libdnssd-dev
+```
+
 
 More information can be found at [node-arm](http://node-arm.herokuapp.com/).
 
