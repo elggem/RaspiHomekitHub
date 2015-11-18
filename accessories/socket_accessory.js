@@ -3,7 +3,7 @@ var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
-var rc = require('./piswitch');
+var rc = require("piswitch");
 
 rc.setup({
     mode: 'sys', // alternative: change to gpio and use root
@@ -25,7 +25,7 @@ var LIGHT = {
   setPowerOn: function(on) { 
     console.log("Turning the light %s!", on ? "on" : "off");
     rc.send('0010110000', 'dip', !on);
-    
+
     LIGHT.powerOn = on;
   },
   identify: function() {
