@@ -11,13 +11,8 @@ serialPort.on("open", function () {
   /*serialPort.on('data', function(data) {
     console.log('data received: ' + data);
   });*/
-  setTimeout( initialize_light, 800 );
+  setTimeout( HUB_LIGHT.updateLight, 800 );
 });
-
-var initialize_light = function() {
-    HUB_LIGHT.updateLight();
-  });
-};
 
 // here's a fake hardware device that we'll expose to HomeKit
 var HUB_LIGHT = {
