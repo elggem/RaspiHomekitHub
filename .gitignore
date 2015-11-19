@@ -1,3 +1,5 @@
 persist
 node_modules
 .DS_Store
+.pioenvs
+.sconsign.dblite
