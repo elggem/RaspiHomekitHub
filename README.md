@@ -34,21 +34,40 @@ More information can be found at [node-arm](http://node-arm.herokuapp.com/).
 
 HAP-NodeJS is a Node.js implementation of HomeKit Accessory Server. The Raspberry Pi code here is based on it.
 
-Remember to run `npm install` before actually running the server.
+ * Install dependencies:
+
+```bash
+   npm install
+```
 
 You can use the following command to start the HAP Server:
 
-```sh
-node HomekitCore.js
+```bash
+   node HomekitCore.js
 ```
 
 The HAP-NodeJS library uses the [debug](https://github.com/visionmedia/debug) library for log output. You can print some or all logs by setting the `DEBUG` environment variable. For instance, to see all debug logs while running the server:
 
 ```sh
-DEBUG=* node HomekitCore.js
+   DEBUG=* node HomekitCore.js
 ```
 
 Arduino Code
 ============
 
-To avoid using a level converter and also to provide a nice animation during the boot phase of the Raspberry Pi an Arduino is used for controlling the WS2812B. The code running on it is essentially a serial interface for the LEDs and is based on Adafruits Neopixel library (install it before trying to compile the code).
+To avoid using a level converter and also to provide a nice animation during the boot phase of the Raspberry Pi an Arduino is used for controlling the WS2812B. The code running on it is essentially a serial interface for the LEDs and is based on Adafruits Neopixel library.
+
+To compile and upload the code you can either use the Arduino IDE or install PlatformIO like this:
+
+```bash
+   pip install -U pip setuptools
+   pip install -U platformio
+```
+
+In the arduino subfolder the following command compiles and uploads the code to the connected Arduino Nano:
+
+```bash
+   platformio run
+```
+
+
