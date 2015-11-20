@@ -38,11 +38,22 @@ void setup() {
   strip_c.begin();
   strip_d.begin();
   
-  strip_a.show(); // Initialize all pixels to 'off'
-  strip_b.show(); 
-  strip_c.show(); 
-  strip_d.show();
-  
+  int r = 10;
+  int g = 5;
+  int b = 2;
+
+  uint16_t i;
+  for(i=0; i<strip_a.numPixels(); i++) {
+    strip_a.setPixelColor(i,  strip_a.Color(r,g,b));
+    strip_b.setPixelColor(i,  strip_b.Color(r,g,b));
+    strip_c.setPixelColor(i,  strip_c.Color(r,g,b));
+    strip_d.setPixelColor(i,  strip_d.Color(r,g,b));
+  }
+
+  strip_a.show();
+  strip_b.show();
+  strip_c.show();
+  strip_d.show();  
 }
 
 void loop() {
