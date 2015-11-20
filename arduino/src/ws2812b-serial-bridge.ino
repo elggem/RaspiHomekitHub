@@ -10,10 +10,10 @@
 //   NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
-Adafruit_NeoPixel strip_a = Adafruit_NeoPixel(15, 5, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel strip_b = Adafruit_NeoPixel(15, 6, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel strip_c = Adafruit_NeoPixel(15, 7, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel strip_d = Adafruit_NeoPixel(15, 8, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_a = Adafruit_NeoPixel(15, 2, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_b = Adafruit_NeoPixel(15, 3, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_c = Adafruit_NeoPixel(15, 4, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_d = Adafruit_NeoPixel(15, 5, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
@@ -42,8 +42,6 @@ void setup() {
   strip_b.show(); 
   strip_c.show(); 
   strip_d.show();
-
-
   
 }
 
@@ -66,12 +64,18 @@ void loop() {
       } else {
         Serial.println("ACK");
         //DEBUG:
-        if(r+g+b == 0) {
-          digitalWrite(13, LOW);
-        } else {
-          digitalWrite(13, HIGH);
-        }
         
+        uint16_t i;
+        for(i=0; i<strip_a.numPixels(); i++) {
+          strip_a.setPixelColor(i,  strip_a.Color(r,g,b));
+          strip_b.setPixelColor(i,  strip_b.Color(r,g,b));
+          strip_c.setPixelColor(i,  strip_c.Color(r,g,b));
+          strip_d.setPixelColor(i,  strip_d.Color(r,g,b));
+        }  
+        strip_a.show();
+        strip_b.show();
+        strip_c.show();
+        strip_d.show();
       }
 
       buffer = "";
@@ -103,12 +107,36 @@ String getValue(String data, int index)
 
   return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
+/*
+
+void rainbow(uint8_t wait) {
+  uint16_t i, j;
+
+  for(j=0; j<256; j++) {
+    for(i=0; i<strip.numPixels(); i++) {
+      strip.setPixelColor(i, Wheel((i+j) & 255));
+    }
+    strip.show();
+    delay(wait);
+  }
+}
 
 
-
-
-
-
+// Input a value 0 to 255 to get a color value.
+// The colours are a transition r - g - b - back to r.
+uint32_t Wheel(byte WheelPos) {
+  WheelPos = 255 - WheelPos;
+  if(WheelPos < 85) {
+    return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  }
+  if(WheelPos < 170) {
+    WheelPos -= 85;
+    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
+  WheelPos -= 170;
+  return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+}
+*/
 
 
 
@@ -142,17 +170,6 @@ void colorWipe(uint32_t c, uint8_t wait) {
   }
 }
 
-void rainbow(uint8_t wait) {
-  uint16_t i, j;
-
-  for(j=0; j<256; j++) {
-    for(i=0; i<strip.numPixels(); i++) {
-      strip.setPixelColor(i, Wheel((i+j) & 255));
-    }
-    strip.show();
-    delay(wait);
-  }
-}
 
 // Slightly different, this makes the rainbow equally distributed throughout
 void rainbowCycle(uint8_t wait) {
@@ -203,17 +220,4 @@ void theaterChaseRainbow(uint8_t wait) {
   }
 }
 
-// Input a value 0 to 255 to get a color value.
-// The colours are a transition r - g - b - back to r.
-uint32_t Wheel(byte WheelPos) {
-  WheelPos = 255 - WheelPos;
-  if(WheelPos < 85) {
-    return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-  }
-  if(WheelPos < 170) {
-    WheelPos -= 85;
-    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-  }
-  WheelPos -= 170;
-  return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
-}*/
+*/
