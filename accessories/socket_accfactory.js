@@ -8,7 +8,8 @@ var rc = require("piswitch");
 rc.setup({
     mode: 'sys', // alternative: change to gpio and use root
     pulseLength: 330, // this works for me, but 350 is very common
-    protocol: 1
+    protocol: 1,
+    pin: 15
 });
 
 var socketDefinitions = [{name: "Outlet A", id: '0010110000'},

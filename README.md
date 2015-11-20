@@ -27,7 +27,7 @@ Raspberry Pi Code
  * Initialize the GPIO pin (to which the 433mhz transmitter is connected to):
 
 ```bash
-   gpio export 0 out
+   gpio export 15 out
 ```
 
 More information can be found at [node-arm](http://node-arm.herokuapp.com/).
