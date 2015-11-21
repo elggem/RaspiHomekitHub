@@ -67,6 +67,8 @@ var HUB_LIGHT = {
   }
 }
 
+
+
 // Generate a consistent UUID for our light Accessory that will remain the same even when
 // restarting our server. We use the `uuid.generate` helper function to create a deterministic
 // UUID based on an arbitrary "namespace" and the word "light".
@@ -74,6 +76,9 @@ var lightUUID = uuid.generate('hap-nodejs:accessories:hublight');
 
 // This is the Accessory that we'll return to HAP-NodeJS that represents our fake light.
 var light = exports.accessory = new Accessory('Hub Light', lightUUID);
+
+// export shutdownlight method
+var light.shutdownLight = HUB_LIGHT.shutdownLight();
 
 // set some basic properties (these values are arbitrary and setting them is optional)
 light

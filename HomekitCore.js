@@ -38,11 +38,11 @@ bridge.on('identify', function(paired, callback) {
   //TODO: Maybe implement a blinking of the hub light here.
   accessories.forEach(function(accessory) {
     if (accessory.displayName == 'Hub Light') {
-      accessory.HUB_LIGHT.shutdownLight();
+      accessory.shutdownLight();
     }
   });
 
-  
+
   callback(); // success
 });
 
