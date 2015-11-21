@@ -3,12 +3,12 @@ var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
-var rc = require("piswitch");
+var SerialPort = require("serialport").SerialPort
+var serialPort = new SerialPort("/dev/ttyUSB1", { baudrate: 9600 });
 
-rc.setup({
-    mode: 'sys', // alternative: change to gpio and use root
-    pulseLength: 350, // this works for me, but 350 is very common
-    pin: 15
+serialPort.on("open", function () {
+  console.log('Connection to hub light established!');
+
 });
 
 var socketDefinitions = [{name: "Outlet A", id: 1},
@@ -29,7 +29,7 @@ socketDefinitions.forEach(function(socketInfo) {
 
   // Init:
   socket.poweredOn = false;
-  rc.send(socketInfo.id, 'dip', !socket.poweredOn);
+  serialPort.write(10+socketInfo.id + " 0\r");
 
   // set some basic properties (these values are arbitrary and setting them is optional)
   socket
