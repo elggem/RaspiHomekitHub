@@ -3,6 +3,18 @@ var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
+var mpu6050 = require('mpu6050');
+var mpu = new mpu6050();
+
+mpu.initialize();
+
+/*
+if (mpu.testConnection()) {
+  console.log(mpu.getMotion6());
+}
+mpu.setSleepEnabled(1)
+*/
+
 // here's a fake temperature sensor device that we'll expose to HomeKit
 var FAKE_SENSOR = {
   motionDetected: false,
