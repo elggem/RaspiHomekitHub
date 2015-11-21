@@ -6,8 +6,6 @@
 Adafruit_NeoPixel strip_a = Adafruit_NeoPixel(28, 2, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel strip_b = Adafruit_NeoPixel(28, 3, NEO_GRB + NEO_KHZ800);
 
-RCSwitch mySwitch = RCSwitch();
-
 int inByte = 0;         // incoming serial byte
 String buffer = "";
 

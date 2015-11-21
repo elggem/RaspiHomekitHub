@@ -3,10 +3,10 @@ var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
-var mpu6050 = require('mpu6050');
-var mpu = new mpu6050();
+//var mpu6050 = require('mpu6050');
+//var mpu = new mpu6050();
 
-mpu.initialize();
+//mpu.initialize();
 
 /*
 if (mpu.testConnection()) {
