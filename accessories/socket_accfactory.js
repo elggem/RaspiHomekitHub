@@ -11,9 +11,9 @@ rc.setup({
     pin: 15
 });
 
-var socketDefinitions = [{name: "Outlet A", id: '1111110000'},
-                         {name: "Outlet B", id: '0010110100'},
-                         {name: "Outlet C", id: '0010110010'}];
+var socketDefinitions = [{name: "Outlet A", id: 1},
+                         {name: "Outlet B", id: 2},
+                         {name: "Outlet C", id: 3}];
 
 exports.accessories = [];
 
@@ -54,7 +54,13 @@ socketDefinitions.forEach(function(socketInfo) {
     })
     .on('set', function(value, callback) {
       console.log("Switching " + socketInfo.name);
-      rc.send(socketInfo.id, 'binary', !value);
+
+      if (value) {
+        serialPort.write(10+socketInfo.id + " 1\r");
+      } else {
+        serialPort.write(10+socketInfo.id + " 0\r");
+      }
+
       socket.poweredOn = value;
       callback(); // Our fake Light is synchronous - this value has been successfully set
     });

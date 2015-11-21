@@ -10,6 +10,17 @@ var accessoryLoader = require('./lib/AccessoryLoader');
 
 console.log("HAP-NodeJS starting...");
 
+var SerialPort = require("serialport").SerialPort
+var serialPort = new SerialPort("/dev/ttyUSB0", { baudrate: 9600 });
+
+serialPort.on("open", function () {
+  console.log('Connection to hub light established!');
+  /*serialPort.on('data', function(data) {
+    console.log('data received: ' + data);
+  });*/
+  setTimeout( HUB_LIGHT.updateLight, 800 );
+});
+
 // Initialize our storage system
 storage.initSync();
 

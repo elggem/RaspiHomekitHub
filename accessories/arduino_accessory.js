@@ -3,17 +3,6 @@ var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
-var SerialPort = require("serialport").SerialPort
-var serialPort = new SerialPort("/dev/ttyUSB0", { baudrate: 9600 });
-
-serialPort.on("open", function () {
-  console.log('Connection to hub light established!');
-  /*serialPort.on('data', function(data) {
-    console.log('data received: ' + data);
-  });*/
-  setTimeout( HUB_LIGHT.updateLight, 800 );
-});
-
 // here's a fake hardware device that we'll expose to HomeKit
 var HUB_LIGHT = {
   powerOn: true,
