@@ -3,8 +3,8 @@
   #include <avr/power.h>
 #endif
 
-Adafruit_NeoPixel strip_a = Adafruit_NeoPixel(28, 2, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel strip_b = Adafruit_NeoPixel(28, 3, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_a = Adafruit_NeoPixel(32, 2, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_b = Adafruit_NeoPixel(32, 3, NEO_GRB + NEO_KHZ800);
 
 int inByte = 0;         // incoming serial byte
 String buffer = "";
@@ -76,7 +76,7 @@ void loop() {
 
   if (animation) {
     if (animationFrame>256*5) animationFrame=0;
-    rainbowCycle(animationFrame++,50);
+    rainbowCycle(animationFrame++,4);
   }
 }
 
