@@ -78,7 +78,7 @@ var lightUUID = uuid.generate('hap-nodejs:accessories:hublight');
 var light = exports.accessory = new Accessory('Hub Light', lightUUID);
 
 // export shutdownlight method
-var light.shutdownLight = HUB_LIGHT.shutdownLight();
+light.shutdownLight = HUB_LIGHT.shutdownLight();
 
 // set some basic properties (these values are arbitrary and setting them is optional)
 light
