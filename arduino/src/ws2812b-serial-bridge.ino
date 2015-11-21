@@ -52,6 +52,7 @@ void loop() {
       int b = getValue(buffer, 3).toInt();
 
       if (strip_id<1 || strip_id>4 || r<0 || r>255 || g<0 || g>255 || b<0 || b>255) {
+        animation = true;
         Serial.println("ERROR");
       } else {
         Serial.println("LED");

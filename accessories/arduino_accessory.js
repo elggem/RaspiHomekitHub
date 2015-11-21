@@ -42,6 +42,7 @@ var HUB_LIGHT = {
     HUB_LIGHT.updateLight();
   },
   identify: function() {
+    serialPort.write("10\r");
     console.log("Hub light identify...");
   },
   updateLight: function() {
