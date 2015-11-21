@@ -7,6 +7,7 @@ var Service = require('./').Service;
 var Characteristic = require('./').Characteristic;
 var Accessory = require('./').Accessory;
 var accessoryLoader = require('./lib/AccessoryLoader');
+var exec = require('child_process').exec;
 
 console.log("HAP-NodeJS starting...");
 
@@ -42,8 +43,11 @@ bridge.on('identify', function(paired, callback) {
     }
   });
 
-
-  callback(); // success
+  child = exec('shutdown -h now',
+    function (error, stdout, stderr) {
+      callback(); // success
+  });
+  
 });
 
 // Publish the Bridge on the local network.
