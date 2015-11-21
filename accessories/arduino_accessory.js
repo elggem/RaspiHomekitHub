@@ -48,7 +48,7 @@ var HUB_LIGHT = {
     console.log("Hub light identify...");
   },
   shutdownLight: function() {
-    if (sconnectionActive) serialPort.write("99\r");
+    if (connectionActive) serialPort.write("99\r");
     console.log("Shutting down...");
   },
   updateLight: function() {
