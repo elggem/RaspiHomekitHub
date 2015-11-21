@@ -10,10 +10,8 @@
 //   NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
-Adafruit_NeoPixel strip_a = Adafruit_NeoPixel(15, 2, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel strip_b = Adafruit_NeoPixel(15, 3, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel strip_c = Adafruit_NeoPixel(15, 4, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel strip_d = Adafruit_NeoPixel(15, 5, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_a = Adafruit_NeoPixel(56, 2, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_b = Adafruit_NeoPixel(56, 3, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
@@ -35,8 +33,6 @@ void setup() {
   //init strips:
   strip_a.begin();
   strip_b.begin();
-  strip_c.begin();
-  strip_d.begin();
   
   int r = 10;
   int g = 5;
@@ -46,14 +42,10 @@ void setup() {
   for(i=0; i<strip_a.numPixels(); i++) {
     strip_a.setPixelColor(i,  strip_a.Color(r,g,b));
     strip_b.setPixelColor(i,  strip_b.Color(r,g,b));
-    strip_c.setPixelColor(i,  strip_c.Color(r,g,b));
-    strip_d.setPixelColor(i,  strip_d.Color(r,g,b));
   }
 
   strip_a.show();
   strip_b.show();
-  strip_c.show();
-  strip_d.show();  
 }
 
 void loop() {
@@ -80,13 +72,9 @@ void loop() {
         for(i=0; i<strip_a.numPixels(); i++) {
           strip_a.setPixelColor(i,  strip_a.Color(r,g,b));
           strip_b.setPixelColor(i,  strip_b.Color(r,g,b));
-          strip_c.setPixelColor(i,  strip_c.Color(r,g,b));
-          strip_d.setPixelColor(i,  strip_d.Color(r,g,b));
         }  
         strip_a.show();
         strip_b.show();
-        strip_c.show();
-        strip_d.show();
       }
 
       buffer = "";

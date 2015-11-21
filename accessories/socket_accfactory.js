@@ -7,12 +7,11 @@ var rc = require("piswitch");
 
 rc.setup({
     mode: 'sys', // alternative: change to gpio and use root
-    pulseLength: 330, // this works for me, but 350 is very common
-    protocol: 1,
+    pulseLength: 350, // this works for me, but 350 is very common
     pin: 15
 });
 
-var socketDefinitions = [{name: "Outlet A", id: '0010110000'},
+var socketDefinitions = [{name: "Outlet A", id: '1111110000'},
                          {name: "Outlet B", id: '0010110100'},
                          {name: "Outlet C", id: '0010110010'}];
 
@@ -55,7 +54,7 @@ socketDefinitions.forEach(function(socketInfo) {
     })
     .on('set', function(value, callback) {
       console.log("Switching " + socketInfo.name);
-      rc.send(socketInfo.id, 'dip', !value);
+      rc.send(socketInfo.id, 'binary', !value);
       socket.poweredOn = value;
       callback(); // Our fake Light is synchronous - this value has been successfully set
     });
