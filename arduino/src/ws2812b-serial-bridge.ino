@@ -127,7 +127,7 @@ void shutdownAnimation() {
   for (j=0; j<strip_a.numPixels(); j++) {
 
     for(i=0; i< strip_a.numPixels(); i++) {
-      if (j>i) {
+      if (j<i) {
         strip_a.setPixelColor(i, strip_a.Color(255, 255, 255));
         strip_b.setPixelColor(i, strip_b.Color(255, 255, 255));
       } else {
@@ -138,7 +138,7 @@ void shutdownAnimation() {
 
     strip_a.show();
     strip_b.show();
-    delay(350);
+    delay(1000);
   }
 }
 
