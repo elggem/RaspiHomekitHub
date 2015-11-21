@@ -7,10 +7,12 @@
     "curve25519": "git://github.com/KhaosT/node-curve25519",
     "debug": "^2.2.0",
     "ed25519": "git://github.com/KhaosT/ed25519",
+    "i2c": "^0.2.1",
     "mdns": "^2.2.4",
+    "mpu6050": "^0.1.2",
     "node-persist": "0.0.3",
-    "serialport": "^2.0.5",
     "piswitch": "^1.2.3",
+    "serialport": "^2.0.5",
     "srp": "git://github.com/KhaosT/node-srp"
   },
   "devDependencies": {
