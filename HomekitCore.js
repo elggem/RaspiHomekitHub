@@ -23,13 +23,6 @@ bridge
   .setCharacteristic(Characteristic.Model, "0.0.1")
   .setCharacteristic(Characteristic.SerialNumber, "AV3923970");
 
-// Listen for bridge identification event
-bridge.on('identify', function(paired, callback) {
-  console.log("Node Bridge identify");
-  //TODO: Maybe implement a blinking of the hub light here.
-  callback(); // success
-});
-
 // Load up all accessories in the /accessories folder
 var dir = path.join(__dirname, "accessories");
 var accessories = accessoryLoader.loadDirectory(dir);
@@ -37,6 +30,20 @@ var accessories = accessoryLoader.loadDirectory(dir);
 // Add them all to the bridge
 accessories.forEach(function(accessory) {
   bridge.addBridgedAccessory(accessory);
+});
+
+// Listen for bridge identification event
+bridge.on('identify', function(paired, callback) {
+  console.log("Node Bridge identify- shutting down");
+  //TODO: Maybe implement a blinking of the hub light here.
+  accessories.forEach(function(accessory) {
+    if (accessory.displayName == 'Hub Light') {
+      accessory.HUB_LIGHT.shutdownLight();
+    }
+  });
+
+  
+  callback(); // success
 });
 
 // Publish the Bridge on the local network.

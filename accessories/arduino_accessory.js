@@ -45,6 +45,10 @@ var HUB_LIGHT = {
     serialPort.write("10\r");
     console.log("Hub light identify...");
   },
+  shutdownLight: function() {
+    serialPort.write("99\r");
+    console.log("Shutting down...");
+  },
   updateLight: function() {
     var color = HSVtoRGB(HUB_LIGHT.hue/360, 
                 HUB_LIGHT.saturation/100, 

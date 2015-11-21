@@ -10,7 +10,7 @@ int inByte = 0;         // incoming serial byte
 String buffer = "";
 
 int animation = true;
-int animationFrame = 0;
+uint16_t animationFrame = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -51,9 +51,14 @@ void loop() {
       int g = getValue(buffer, 2).toInt();
       int b = getValue(buffer, 3).toInt();
 
-      if (strip_id<1 || strip_id>4 || r<0 || r>255 || g<0 || g>255 || b<0 || b>255) {
+      if (strip_id==10) {
         animation = true;
         Serial.println("ERROR");
+
+      } else if (strip_id==99) {
+        shutdownAnimation();
+        Serial.println("SHUTDOWN");
+
       } else {
         Serial.println("LED");
         //DEBUG:
@@ -113,6 +118,28 @@ void rainbowCycle(int j, uint8_t wait) {
   strip_a.show();
   strip_b.show();
   delay(wait);
+}
+
+
+void shutdownAnimation() {
+  uint16_t i, j;
+
+  for (j=0; j<strip_a.numPixels(); j++) {
+
+    for(i=0; i< strip_a.numPixels(); i++) {
+      if (j>i) {
+        strip_a.setPixelColor(i, strip_a.Color(255, 255, 255));
+        strip_b.setPixelColor(i, strip_b.Color(255, 255, 255));
+      } else {
+        strip_a.setPixelColor(i, strip_a.Color(0, 0, 0));
+        strip_b.setPixelColor(i, strip_b.Color(0, 0, 0));
+      }
+    }
+
+    strip_a.show();
+    strip_b.show();
+    delay(350);
+  }
 }
 
 
