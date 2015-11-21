@@ -3,17 +3,17 @@ var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
-var SerialPort = require("serialport").SerialPort
-var serialPort = new SerialPort("/dev/ttyUSB1", { baudrate: 9600 });
+var rc = require("piswitch");
 
-serialPort.on("open", function () {
-  console.log('Connection to hub light established!');
-
+rc.setup({
+    mode: 'sys', // alternative: change to gpio and use root
+    pulseLength: 350, // this works for me, but 350 is very common
+    pin: 17
 });
 
-var socketDefinitions = [{name: "Outlet A", id: 1},
-                         {name: "Outlet B", id: 2},
-                         {name: "Outlet C", id: 3}];
+var socketDefinitions = [{name: "Outlet A", id: '1111110000'},
+                         {name: "Outlet B", id: '1111101000'},
+                         {name: "Outlet C", id: '1111100100'}];
 
 exports.accessories = [];
 
@@ -29,7 +29,7 @@ socketDefinitions.forEach(function(socketInfo) {
 
   // Init:
   socket.poweredOn = false;
-  serialPort.write(10+socketInfo.id + " 0\r");
+  rc.send(socketInfo.id, 'dip', !socket.poweredOn);
 
   // set some basic properties (these values are arbitrary and setting them is optional)
   socket
@@ -54,13 +54,7 @@ socketDefinitions.forEach(function(socketInfo) {
     })
     .on('set', function(value, callback) {
       console.log("Switching " + socketInfo.name);
-
-      if (value) {
-        serialPort.write(10+socketInfo.id + " 1\r");
-      } else {
-        serialPort.write(10+socketInfo.id + " 0\r");
-      }
-
+      rc.send(socketInfo.id, 'binary', !value);
       socket.poweredOn = value;
       callback(); // Our fake Light is synchronous - this value has been successfully set
     });
