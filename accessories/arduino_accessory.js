@@ -5,12 +5,14 @@ var uuid = require('../').uuid;
 
 var SerialPort = require("serialport").SerialPort
 var serialPort = new SerialPort("/dev/ttyUSB1", { baudrate: 9600 });
+var connectionActive = false;
 
 serialPort.on("open", function () {
   console.log('Connection to hub light established!');
   /*serialPort.on('data', function(data) {
     console.log('data received: ' + data);
   });*/
+  connectionActive = true;
   setTimeout( HUB_LIGHT.updateLight, 800 );
 });
 
@@ -46,7 +48,7 @@ var HUB_LIGHT = {
     console.log("Hub light identify...");
   },
   shutdownLight: function() {
-    serialPort.write("99\r");
+    if (sconnectionActive) serialPort.write("99\r");
     console.log("Shutting down...");
   },
   updateLight: function() {
