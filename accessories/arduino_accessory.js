@@ -4,7 +4,7 @@ var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
 var SerialPort = require("serialport").SerialPort
-var serialPort = new SerialPort("/dev/ttyUSB0", { baudrate: 9600 });
+var serialPort = new SerialPort("/dev/ttyUSB0", { baudrate: 2400 });
 var connectionActive = false;
 
 serialPort.on("open", function () {
@@ -175,3 +175,4 @@ function HSVtoRGB(h, s, v) {
         b: Math.round(b * 255)
     };
 }
+

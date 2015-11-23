@@ -6,6 +6,9 @@
 Adafruit_NeoPixel strip_a = Adafruit_NeoPixel(32, 2, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel strip_b = Adafruit_NeoPixel(32, 3, NEO_GRB + NEO_KHZ800);
 
+uint8_t current_color[3] = {255,255,255};
+uint8_t target_color[3] = {255,255,255};
+
 int inByte = 0;         // incoming serial byte
 String buffer = "";
 
@@ -13,7 +16,7 @@ int animation = true;
 uint16_t animationFrame = 0;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(2400);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
   }
@@ -21,23 +24,10 @@ void setup() {
   //init strips:
   strip_a.begin();
   strip_b.begin();
-  
-  int r = 10;
-  int g = 5;
-  int b = 2;
-
-  uint16_t i;
-  for(i=0; i<strip_a.numPixels(); i++) {
-    strip_a.setPixelColor(i,  strip_a.Color(r,g,b));
-    strip_b.setPixelColor(i,  strip_b.Color(r,g,b));
-  }
-
-  strip_a.show();
-  strip_b.show();
 }
 
-void loop() {
 
+void loop() {
 
   if (Serial.available() > 0) {
     // get incoming byte:
@@ -53,7 +43,7 @@ void loop() {
 
       if (strip_id==10) {
         animation = true;
-        Serial.println("ERROR");
+        Serial.println("ANIMATION");
 
       } else if (strip_id==99) {
         shutdownAnimation();
@@ -61,15 +51,10 @@ void loop() {
 
       } else {
         Serial.println("LED");
-        //DEBUG:
-        
-        uint16_t i;
-        for(i=0; i<strip_a.numPixels(); i++) {
-          strip_a.setPixelColor(i,  strip_a.Color(r,g,b));
-          strip_b.setPixelColor(i,  strip_b.Color(r,g,b));
-        }  
-        strip_a.show();
-        strip_b.show();
+
+        target_color[0] = r;
+        target_color[1] = g;
+        target_color[2] = b;
       }
 
       buffer = "";
@@ -82,6 +67,29 @@ void loop() {
   if (animation) {
     if (animationFrame>256*5) animationFrame=0;
     rainbowCycle(animationFrame++,4);
+
+  } else if (current_color[0]!=target_color[0] || 
+             current_color[1]!=target_color[1] || 
+             current_color[2]!=target_color[2]) {
+
+    if (current_color[0] > target_color[0]) current_color[0]--;
+    if (current_color[0] < target_color[0]) current_color[0]++;
+    if (current_color[1] > target_color[1]) current_color[1]--;
+    if (current_color[1] < target_color[1]) current_color[1]++;
+    if (current_color[2] > target_color[2]) current_color[2]--;
+    if (current_color[2] < target_color[2]) current_color[2]++;
+
+    uint16_t i;
+    
+    for(i=0; i<strip_a.numPixels(); i++) {
+      strip_a.setPixelColor(i,  strip_a.Color(current_color[0],current_color[1],current_color[2]));
+      strip_b.setPixelColor(i,  strip_b.Color(current_color[0],current_color[1],current_color[2]));
+    }
+
+    strip_a.show();
+    strip_b.show();
+
+    delay(1);
   }
 }
 
@@ -162,3 +170,4 @@ String getValue(String data, int index)
 
   return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
+
