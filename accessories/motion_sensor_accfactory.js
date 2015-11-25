@@ -27,18 +27,22 @@ var FAKE_SENSOR = {
   }
 }
 
-
-// Generate a consistent UUID for our Temperature Sensor Accessory that will remain the same
-// even when restarting our server. We use the `uuid.generate` helper function to create
-// a deterministic UUID based on an arbitrary "namespace" and the string "temperature-sensor".
-var sensorUUID = uuid.generate('hap-nodejs:accessories:motion-sensor');
-
 // This is the Accessory that we'll return to HAP-NodeJS that represents our fake lock.
-var sensor = exports.accessory = new Accessory('Motion Sensor', sensorUUID);
+var tilt_sensor = new Accessory('Is Tilted', uuid.generate('hap-nodejs:accessories:tilt-sensor'));
+var shock_sensor = new Accessory('Is Tilted', uuid.generate('hap-nodejs:accessories:shock-sensor'));
 
 // Add the actual TemperatureSensor Service.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
-sensor
+tilt_sensor
+  .addService(Service.MotionSensor)
+  .getCharacteristic(Characteristic.MotionDetected)
+  .on('get', function(callback) {
+    
+    // return our current value
+    callback(null, FAKE_SENSOR.getMotion());
+  });
+
+shock_sensor
   .addService(Service.MotionSensor)
   .getCharacteristic(Characteristic.MotionDetected)
   .on('get', function(callback) {
@@ -53,8 +57,26 @@ setInterval(function() {
   FAKE_SENSOR.randomize();
   
   // update the characteristic value so interested iOS devices can get notified
-  sensor
+  tilt_sensor
     .getService(Service.MotionSensor)
     .setCharacteristic(Characteristic.MotionDetected, FAKE_SENSOR.motionDetected);
   
 }, 3000);
+
+// randomize our temperature reading every 3 seconds
+setInterval(function() {
+  
+  FAKE_SENSOR.randomize();
+  
+  // update the characteristic value so interested iOS devices can get notified
+  shock_sensor
+    .getService(Service.MotionSensor)
+    .setCharacteristic(Characteristic.MotionDetected, FAKE_SENSOR.motionDetected);
+  
+}, 3000);
+
+
+exports.accessories = [];
+exports.accessories.push(tilt_sensor);
+exports.accessories.push(shock_sensor);
+

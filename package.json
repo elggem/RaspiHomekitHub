@@ -11,6 +11,7 @@
     "mdns": "^2.2.4",
     "mpu6050": "^0.1.2",
     "node-persist": "0.0.3",
+    "rpi-433": "1.1.1",
     "piswitch": "^1.2.3",
     "serialport": "^2.0.5",
     "srp": "git://github.com/KhaosT/node-srp"
