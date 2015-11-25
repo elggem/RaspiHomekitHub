@@ -2,6 +2,18 @@ var Accessory = require('../').Accessory;
 var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
+var rpi433    = require('rpi-433');
+
+rfSniffer = rpi433.sniffer(2, 500);
+
+rfSniffer.on('codes', function (code) {
+  console.log('Code received: '+code);
+
+  //update button channel...
+   //   button
+   //   .getService(Service.MotionSensor)
+   //   .setCharacteristic(Characteristic.MotionDetected, false);
+});
 
 var buttonDefinitions = [{name: "Button A", id: '1101110000'},
                          {name: "Button B", id: '1101101000'},
@@ -27,16 +39,6 @@ buttonDefinitions.forEach(function(buttonInfo) {
     // return our current value
     callback(null, false);
   });
-
-  // randomize our temperature reading every 3 seconds
-  setInterval(function() {
-        
-    // update the characteristic value so interested iOS devices can get notified
-    button
-      .getService(Service.MotionSensor)
-      .setCharacteristic(Characteristic.MotionDetected, false);
-    
-  }, 3000);
 
   exports.accessories.push(button);
 
