@@ -4,7 +4,7 @@ var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
 var SerialPort = require("serialport").SerialPort
-var serialPort = new SerialPort("/dev/ttyUSB0", { baudrate: 2400 });
+var serialPort = new SerialPort("/dev/arduino", { baudrate: 2400 });
 var connectionActive = false;
 
 serialPort.on("open", function () {

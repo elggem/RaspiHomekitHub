@@ -3,33 +3,20 @@ var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
-//var mpu6050 = require('mpu6050');
-//var mpu = new mpu6050();
+var i2c = require('i2c-bus');
+var MPU6050 = require('i2c-mpu6050');
 
-//mpu.initialize();
+var address = 0x68;
+var i2c1 = i2c.openSync(1);
 
-/*
-if (mpu.testConnection()) {
-  console.log(mpu.getMotion6());
-}
-mpu.setSleepEnabled(1)
-*/
+var sensor = new MPU6050(i2c1, address);
 
-// here's a fake temperature sensor device that we'll expose to HomeKit
-var FAKE_SENSOR = {
-  motionDetected: false,
-  getMotion: function() { 
-    return FAKE_SENSOR.motionDetected;
-  },
-  randomize: function() {
-    // randomize temperature to a value between 0 and 100
-    FAKE_SENSOR.motionDetected = Math.round(Math.random());
-  }
-}
+var data = sensor.readSync().rotation.x;
+console.log(data);
 
 // This is the Accessory that we'll return to HAP-NodeJS that represents our fake lock.
 var tilt_sensor = new Accessory('Is Tilted', uuid.generate('hap-nodejs:accessories:tilt-sensor'));
-var shock_sensor = new Accessory('Is Tilted', uuid.generate('hap-nodejs:accessories:shock-sensor'));
+var shock_sensor = new Accessory('Was Shocked', uuid.generate('hap-nodejs:accessories:shock-sensor'));
 
 // Add the actual TemperatureSensor Service.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
@@ -39,7 +26,7 @@ tilt_sensor
   .on('get', function(callback) {
     
     // return our current value
-    callback(null, FAKE_SENSOR.getMotion());
+    callback(null, sensor.readSync().x<50);
   });
 
 shock_sensor
@@ -48,35 +35,29 @@ shock_sensor
   .on('get', function(callback) {
     
     // return our current value
-    callback(null, FAKE_SENSOR.getMotion());
+    callback(null, sensor.readSync().y>5);
   });
 
 // randomize our temperature reading every 3 seconds
 setInterval(function() {
-  
-  FAKE_SENSOR.randomize();
-  
   // update the characteristic value so interested iOS devices can get notified
   tilt_sensor
     .getService(Service.MotionSensor)
-    .setCharacteristic(Characteristic.MotionDetected, FAKE_SENSOR.motionDetected);
+    .setCharacteristic(Characteristic.MotionDetected, sensor.readSync().rotation.x<50);
   
-}, 3000);
+}, 1100);
 
 // randomize our temperature reading every 3 seconds
 setInterval(function() {
-  
-  FAKE_SENSOR.randomize();
-  
-  // update the characteristic value so interested iOS devices can get notified
+    // update the characteristic value so interested iOS devices can get notified
   shock_sensor
     .getService(Service.MotionSensor)
-    .setCharacteristic(Characteristic.MotionDetected, FAKE_SENSOR.motionDetected);
+    .setCharacteristic(Characteristic.MotionDetected, sensor.readSync().rotation.y>5);
   
-}, 3000);
+}, 850);
 
 
 exports.accessories = [];
 exports.accessories.push(tilt_sensor);
-exports.accessories.push(shock_sensor);
+//exports.accessories.push(shock_sensor);
 
